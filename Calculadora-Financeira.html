@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ptbr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Financeira Sensfit</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="header">
+        <div class="container">
+            <img src="https://media.discordapp.net/attachments/1208151335669731330/1216806069423308922/222_Sem_Titulo_20240311145137.png?ex=6601b9f6&is=65ef44f6&hm=7f59d137c0461828223d6cc25d4990abd7a0ed5f727140eca3384a24141572c5&=&format=webp&quality=lossless&width=395&height=395"/>
+            <ul class="navbar">
+                <li>Home</li>
+                <li>Quem Somos?</li>
+                <li>Simulador</li>
+                <li>Fale Conosco</li>
+                <button>Login</button>
+            </ul>
+        </div>    
+    </div>
+
+    <div class="header">
+        <div class="calculadora">
+                <h2>Simulador</h2>
+                <label>Preço de compra do equipamento:<input type="number" id="input_precoAparelho" /></label>
+                <br>
+                <label>Tempo de vida útil:<input type="number" id="input_vidaUtil" /></label>
+                <br>
+                <label>Há quantos anos este equipamento está em uso?:<input type="number" id="input_tempoUso" /></label>
+                <br>
+                <label>Quantidade de manutenções já realizadas neste equipamento:<input type="number" id="input_qtdManutencao" /></label>
+                <br>
+                <label>Valor de cada manutenção:<input type="number" id="input_valorManutencao" /></label>
+                <br>
+                <label>Vezes que este equipamento foi substituido dentro do período de vida útil:<input type="number"
+                id="input_vezesSubstituido" /></label>
+                <br>
+                <button onclick="calcular()">Calcular</button>
+                <br>
+                <div class="resultados" id="div_calcular"></div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
+
+<script>
+    
+    function calcular() {
+        var precoOriginal= Number(input_precoAparelho.value)
+        var vidaUtil = Number(input_vidaUtil.value)
+        var precoAno = precoOriginal / vidaUtil
+        
+        var qtdManutencao = Number(input_qtdManutencao.value)
+        var valorManutencao = Number(input_valorManutencao.value)
+        var custoManutencao = qtdManutencao * valorManutencao
+
+        var tempoUso = Number(input_tempoUso.value)
+        precoAno = (custoManutencao + (precoAno * tempoUso)) / tempoUso
+
+        var precoFinal = precoAno * vidaUtil
+
+        var custoAparelho = precoFinal - precoOriginal
+
+        var substituido = Number(input_vezesSubstituido.value) * precoOriginal
+        var custoTotal = substituido + custoAparelho + precoOriginal
+
+
+        div_calcular.innerHTML = `<ul> 
+            <li>Preço original do equipamento:${precoOriginal}</li>
+            <br>
+            <li>Preço do equipamento por ano:${precoOriginal / vidaUtil}</li>
+            <br>
+            <li>Quantidade de manutenções:${qtdManutencao}</li>
+            <br>
+            <li>Valor da manutenção:${valorManutencao}</li>
+            <br>
+            <li>Valor pago  em manutenção:${custoManutencao}</li>
+            <br>
+            <li>Preço total do aparelho com manutenção:${precoFinal}</li>
+            <br>
+            <li>Preço anual com manutenção:${precoAno}</li>
+            <br>
+            <li>Valor pago a mais no aparelho:${custoAparelho}</li> 
+            <br>
+            <li>Custo total:${custoTotal}</li>
+            </ul>
+            <br><br>
+            <button onclick="Sensfit()">Solução Sensfit</button>
+            <br>`
+    }
+    function Sensfit() {
+        var precoOriginal= Number(input_precoAparelho.value)
+        var vidaUtil = Number(input_vidaUtil.value)
+        var precoAno = precoOriginal / vidaUtil
+        
+        var qtdManutencao = Number(input_qtdManutencao.value)
+        var valorManutencao = Number(input_valorManutencao.value)
+        var custoManutencao = qtdManutencao * valorManutencao
+
+        var tempoUso = Number(input_tempoUso.value)
+        precoAno = (custoManutencao + (precoAno * tempoUso)) / tempoUso
+
+        var precoFinal = precoAno * vidaUtil
+
+        var custoAparelho = precoFinal - precoOriginal
+
+        var manutencaoPreventiva = (valorManutencao * 0.4)
+        var custoManutencaoPreventiva = manutencaoPreventiva * qtdManutencao
+        var anoManutencaoPreventiva = (custoManutencaoPreventiva + ((precoOriginal / vidaUtil) * tempoUso)) / tempoUso
+        var precoFinalSensfit = anoManutencaoPreventiva * vidaUtil
+
+
+        div_calcular.innerHTML += `<br> 
+        <ul>
+        <li>Preço do aquipamento por ano:${anoManutencaoPreventiva}</li>
+        <br>
+        <li>Economia por ano:${precoAno - anoManutencaoPreventiva}</li> 
+        <br>
+        <li>Economia total até fim da vida util do equipamento: ${precoFinal - precoFinalSensfit}</li>
+        </ul>`
+    }
+
+</script>
